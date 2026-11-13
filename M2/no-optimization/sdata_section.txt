@@ -1,0 +1,8 @@
+
+main-o0.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .sdata:
+
+000113e8 <SID>:
+   113e8:	cd eb 12 00                                         ....

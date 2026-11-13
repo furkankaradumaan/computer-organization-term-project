@@ -1,0 +1,276 @@
+
+main-o0.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00010094 <main>:
+unsigned decrypt_successful();
+unsigned rotate_left(unsigned);
+unsigned calculate_checksum();
+void xor_numbers(unsigned K);
+
+int main() {
+   10094:	fe010113          	addi	sp,sp,-32
+   10098:	00112e23          	sw	ra,28(sp)
+   1009c:	00812c23          	sw	s0,24(sp)
+   100a0:	02010413          	addi	s0,sp,32
+        unsigned K;
+        if (SID % 256 == 0) K = 0xA5;
+   100a4:	0012f7b7          	lui	a5,0x12f
+   100a8:	bcd78793          	addi	a5,a5,-1075 # 12ebcd <__global_pointer$+0x11cfe5>
+   100ac:	0ff7f793          	zext.b	a5,a5
+   100b0:	00079863          	bnez	a5,100c0 <main+0x2c>
+   100b4:	0a500793          	li	a5,165
+   100b8:	fef42623          	sw	a5,-20(s0)
+   100bc:	0140006f          	j	100d0 <main+0x3c>
+        else K = SID % 256;
+   100c0:	0012f7b7          	lui	a5,0x12f
+   100c4:	bcd78793          	addi	a5,a5,-1075 # 12ebcd <__global_pointer$+0x11cfe5>
+   100c8:	0ff7f793          	zext.b	a5,a5
+   100cc:	fef42623          	sw	a5,-20(s0)
+        initialize_numbers();
+   100d0:	0c4000ef          	jal	10194 <initialize_numbers>
+        
+        xor_numbers(K);
+   100d4:	fec42503          	lw	a0,-20(s0)
+   100d8:	28c000ef          	jal	10364 <xor_numbers>
+        checksum = calculate_checksum();
+   100dc:	210000ef          	jal	102ec <calculate_checksum>
+   100e0:	00050713          	mv	a4,a0
+   100e4:	000117b7          	lui	a5,0x11
+   100e8:	3ee7a623          	sw	a4,1004(a5) # 113ec <checksum>
+        
+        xor_numbers(K);
+   100ec:	fec42503          	lw	a0,-20(s0)
+   100f0:	274000ef          	jal	10364 <xor_numbers>
+        decrypt_ok = decrypt_successful();
+   100f4:	11c000ef          	jal	10210 <decrypt_successful>
+   100f8:	00050713          	mv	a4,a0
+   100fc:	80e1a423          	sw	a4,-2040(gp) # 113f0 <decrypt_ok>
+        
+        return 0;
+   10100:	00000793          	li	a5,0
+}
+   10104:	00078513          	mv	a0,a5
+   10108:	01c12083          	lw	ra,28(sp)
+   1010c:	01812403          	lw	s0,24(sp)
+   10110:	02010113          	addi	sp,sp,32
+   10114:	00008067          	ret
+
+00010118 <get_next_number>:
+unsigned get_next_number(unsigned *x) {
+   10118:	fe010113          	addi	sp,sp,-32
+   1011c:	00112e23          	sw	ra,28(sp)
+   10120:	00812c23          	sw	s0,24(sp)
+   10124:	02010413          	addi	s0,sp,32
+   10128:	fea42623          	sw	a0,-20(s0)
+        *x = 1664525U * (*x) + 1013904223U;
+   1012c:	fec42783          	lw	a5,-20(s0)
+   10130:	0007a703          	lw	a4,0(a5)
+   10134:	001967b7          	lui	a5,0x196
+   10138:	60d78793          	addi	a5,a5,1549 # 19660d <__global_pointer$+0x184a25>
+   1013c:	02f70733          	mul	a4,a4,a5
+   10140:	3c6ef7b7          	lui	a5,0x3c6ef
+   10144:	35f78793          	addi	a5,a5,863 # 3c6ef35f <__global_pointer$+0x3c6dd777>
+   10148:	00f70733          	add	a4,a4,a5
+   1014c:	fec42783          	lw	a5,-20(s0)
+   10150:	00e7a023          	sw	a4,0(a5)
+        return ((*x) >> 16) % R + B;
+   10154:	fec42783          	lw	a5,-20(s0)
+   10158:	0007a783          	lw	a5,0(a5)
+   1015c:	0107d713          	srli	a4,a5,0x10
+   10160:	4ec4f7b7          	lui	a5,0x4ec4f
+   10164:	c4f78793          	addi	a5,a5,-945 # 4ec4ec4f <__global_pointer$+0x4ec3d067>
+   10168:	02f737b3          	mulhu	a5,a4,a5
+   1016c:	0037d793          	srli	a5,a5,0x3
+   10170:	01a00693          	li	a3,26
+   10174:	02d787b3          	mul	a5,a5,a3
+   10178:	40f707b3          	sub	a5,a4,a5
+   1017c:	04178793          	addi	a5,a5,65
+}
+   10180:	00078513          	mv	a0,a5
+   10184:	01c12083          	lw	ra,28(sp)
+   10188:	01812403          	lw	s0,24(sp)
+   1018c:	02010113          	addi	sp,sp,32
+   10190:	00008067          	ret
+
+00010194 <initialize_numbers>:
+void initialize_numbers() {
+   10194:	fe010113          	addi	sp,sp,-32
+   10198:	00112e23          	sw	ra,28(sp)
+   1019c:	00812c23          	sw	s0,24(sp)
+   101a0:	02010413          	addi	s0,sp,32
+        unsigned x = SID;
+   101a4:	0012f7b7          	lui	a5,0x12f
+   101a8:	bcd78793          	addi	a5,a5,-1075 # 12ebcd <__global_pointer$+0x11cfe5>
+   101ac:	fef42423          	sw	a5,-24(s0)
+        for (int i = 0; i < N; i++) numbers[i] = get_next_number(&x);
+   101b0:	fe042623          	sw	zero,-20(s0)
+   101b4:	0380006f          	j	101ec <initialize_numbers+0x58>
+   101b8:	fe840793          	addi	a5,s0,-24
+   101bc:	00078513          	mv	a0,a5
+   101c0:	f59ff0ef          	jal	10118 <get_next_number>
+   101c4:	00050693          	mv	a3,a0
+   101c8:	000117b7          	lui	a5,0x11
+   101cc:	3f478713          	addi	a4,a5,1012 # 113f4 <numbers>
+   101d0:	fec42783          	lw	a5,-20(s0)
+   101d4:	00279793          	slli	a5,a5,0x2
+   101d8:	00f707b3          	add	a5,a4,a5
+   101dc:	00d7a023          	sw	a3,0(a5)
+   101e0:	fec42783          	lw	a5,-20(s0)
+   101e4:	00178793          	addi	a5,a5,1
+   101e8:	fef42623          	sw	a5,-20(s0)
+   101ec:	fec42703          	lw	a4,-20(s0)
+   101f0:	02400793          	li	a5,36
+   101f4:	fce7f2e3          	bgeu	a5,a4,101b8 <initialize_numbers+0x24>
+}
+   101f8:	00000013          	nop
+   101fc:	00000013          	nop
+   10200:	01c12083          	lw	ra,28(sp)
+   10204:	01812403          	lw	s0,24(sp)
+   10208:	02010113          	addi	sp,sp,32
+   1020c:	00008067          	ret
+
+00010210 <decrypt_successful>:
+unsigned decrypt_successful() {
+   10210:	fe010113          	addi	sp,sp,-32
+   10214:	00112e23          	sw	ra,28(sp)
+   10218:	00812c23          	sw	s0,24(sp)
+   1021c:	00912a23          	sw	s1,20(sp)
+   10220:	02010413          	addi	s0,sp,32
+        unsigned x = SID;
+   10224:	0012f7b7          	lui	a5,0x12f
+   10228:	bcd78793          	addi	a5,a5,-1075 # 12ebcd <__global_pointer$+0x11cfe5>
+   1022c:	fef42223          	sw	a5,-28(s0)
+        unsigned is_same = 1;
+   10230:	00100793          	li	a5,1
+   10234:	fef42623          	sw	a5,-20(s0)
+        for (int i = 0; i < N && is_same; i++) is_same = numbers[i] == get_next_number(&x);
+   10238:	fe042423          	sw	zero,-24(s0)
+   1023c:	0480006f          	j	10284 <decrypt_successful+0x74>
+   10240:	000117b7          	lui	a5,0x11
+   10244:	3f478713          	addi	a4,a5,1012 # 113f4 <numbers>
+   10248:	fe842783          	lw	a5,-24(s0)
+   1024c:	00279793          	slli	a5,a5,0x2
+   10250:	00f707b3          	add	a5,a4,a5
+   10254:	0007a483          	lw	s1,0(a5)
+   10258:	fe440793          	addi	a5,s0,-28
+   1025c:	00078513          	mv	a0,a5
+   10260:	eb9ff0ef          	jal	10118 <get_next_number>
+   10264:	00050793          	mv	a5,a0
+   10268:	40f487b3          	sub	a5,s1,a5
+   1026c:	0017b793          	seqz	a5,a5
+   10270:	0ff7f793          	zext.b	a5,a5
+   10274:	fef42623          	sw	a5,-20(s0)
+   10278:	fe842783          	lw	a5,-24(s0)
+   1027c:	00178793          	addi	a5,a5,1
+   10280:	fef42423          	sw	a5,-24(s0)
+   10284:	fe842703          	lw	a4,-24(s0)
+   10288:	02400793          	li	a5,36
+   1028c:	00e7e663          	bltu	a5,a4,10298 <decrypt_successful+0x88>
+   10290:	fec42783          	lw	a5,-20(s0)
+   10294:	fa0796e3          	bnez	a5,10240 <decrypt_successful+0x30>
+        return is_same;
+   10298:	fec42783          	lw	a5,-20(s0)
+}
+   1029c:	00078513          	mv	a0,a5
+   102a0:	01c12083          	lw	ra,28(sp)
+   102a4:	01812403          	lw	s0,24(sp)
+   102a8:	01412483          	lw	s1,20(sp)
+   102ac:	02010113          	addi	sp,sp,32
+   102b0:	00008067          	ret
+
+000102b4 <rotate_left>:
+unsigned rotate_left(unsigned x) { 
+   102b4:	fe010113          	addi	sp,sp,-32
+   102b8:	00112e23          	sw	ra,28(sp)
+   102bc:	00812c23          	sw	s0,24(sp)
+   102c0:	02010413          	addi	s0,sp,32
+   102c4:	fea42623          	sw	a0,-20(s0)
+        return (x << 1) | ((x >> 31) & 1); 
+   102c8:	fec42783          	lw	a5,-20(s0)
+   102cc:	01f7d713          	srli	a4,a5,0x1f
+   102d0:	00179793          	slli	a5,a5,0x1
+   102d4:	00e7e7b3          	or	a5,a5,a4
+}
+   102d8:	00078513          	mv	a0,a5
+   102dc:	01c12083          	lw	ra,28(sp)
+   102e0:	01812403          	lw	s0,24(sp)
+   102e4:	02010113          	addi	sp,sp,32
+   102e8:	00008067          	ret
+
+000102ec <calculate_checksum>:
+unsigned calculate_checksum() {
+   102ec:	fe010113          	addi	sp,sp,-32
+   102f0:	00112e23          	sw	ra,28(sp)
+   102f4:	00812c23          	sw	s0,24(sp)
+   102f8:	02010413          	addi	s0,sp,32
+        unsigned c = 0;
+   102fc:	fe042623          	sw	zero,-20(s0)
+        for (int i = 0; i < N; i++) c = rotate_left(c) + numbers[i];
+   10300:	fe042423          	sw	zero,-24(s0)
+   10304:	03c0006f          	j	10340 <calculate_checksum+0x54>
+   10308:	fec42503          	lw	a0,-20(s0)
+   1030c:	fa9ff0ef          	jal	102b4 <rotate_left>
+   10310:	00050693          	mv	a3,a0
+   10314:	000117b7          	lui	a5,0x11
+   10318:	3f478713          	addi	a4,a5,1012 # 113f4 <numbers>
+   1031c:	fe842783          	lw	a5,-24(s0)
+   10320:	00279793          	slli	a5,a5,0x2
+   10324:	00f707b3          	add	a5,a4,a5
+   10328:	0007a783          	lw	a5,0(a5)
+   1032c:	00f687b3          	add	a5,a3,a5
+   10330:	fef42623          	sw	a5,-20(s0)
+   10334:	fe842783          	lw	a5,-24(s0)
+   10338:	00178793          	addi	a5,a5,1
+   1033c:	fef42423          	sw	a5,-24(s0)
+   10340:	fe842703          	lw	a4,-24(s0)
+   10344:	02400793          	li	a5,36
+  10348:	fce7f0e3          	bgeu	a5,a4,10308 <calculate_checksum+0x1c>
+        return c;
+   1034c:	fec42783          	lw	a5,-20(s0)
+}
+   10350:	00078513          	mv	a0,a5
+   10354:	01c12083          	lw	ra,28(sp)
+   10358:	01812403          	lw	s0,24(sp)
+   1035c:	02010113          	addi	sp,sp,32
+   10360:	00008067          	ret
+
+00010364 <xor_numbers>:
+void xor_numbers(unsigned K) {
+   10364:	fd010113          	addi	sp,sp,-48
+   10368:	02112623          	sw	ra,44(sp)
+   1036c:	02812423          	sw	s0,40(sp)
+   10370:	03010413          	addi	s0,sp,48
+   10374:	fca42e23          	sw	a0,-36(s0)
+        for (int i = 0; i < N; i++) numbers[i] ^= K;
+   10378:	fe042623          	sw	zero,-20(s0)
+   1037c:	0480006f          	j	103c4 <xor_numbers+0x60>
+   10380:	000117b7          	lui	a5,0x11
+   10384:	3f478713          	addi	a4,a5,1012 # 113f4 <numbers>
+   10388:	fec42783          	lw	a5,-20(s0)
+   1038c:	00279793          	slli	a5,a5,0x2
+   10390:	00f707b3          	add	a5,a4,a5
+   10394:	0007a703          	lw	a4,0(a5)
+   10398:	fdc42783          	lw	a5,-36(s0)
+   1039c:	00f74733          	xor	a4,a4,a5
+   103a0:	000117b7          	lui	a5,0x11
+   103a4:	3f478693          	addi	a3,a5,1012 # 113f4 <numbers>
+   103a8:	fec42783          	lw	a5,-20(s0)
+   103ac:	00279793          	slli	a5,a5,0x2
+   103b0:	00f687b3          	add	a5,a3,a5
+   103b4:	00e7a023          	sw	a4,0(a5)
+   103b8:	fec42783          	lw	a5,-20(s0)
+   103bc:	00178793          	addi	a5,a5,1
+   103c0:	fef42623          	sw	a5,-20(s0)
+   103c4:	fec42703          	lw	a4,-20(s0)
+   103c8:	02400793          	li	a5,36
+   103cc:	fae7fae3          	bgeu	a5,a4,10380 <xor_numbers+0x1c>
+}
+   103d0:	00000013          	nop
+   103d4:	00000013          	nop
+   103d8:	02c12083          	lw	ra,44(sp)
+   103dc:	02812403          	lw	s0,40(sp)
+   103e0:	03010113          	addi	sp,sp,48
+   103e4:	00008067          	ret

@@ -1,0 +1,11 @@
+
+main-o0.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .sbss:
+
+000113ec <checksum>:
+   113ec:	00 00 00 00                                         ....
+
+000113f0 <decrypt_ok>:
+   113f0:	00 00 00 00                                         ....

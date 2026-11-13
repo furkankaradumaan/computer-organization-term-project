@@ -1,0 +1,8 @@
+
+main-o0.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .bss:
+
+000113f4 <numbers>:
+	...

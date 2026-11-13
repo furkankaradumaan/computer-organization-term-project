@@ -1,0 +1,31 @@
+
+main-o0.elf:     file format elf32-littleriscv
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000354  00010094  00010094  00000094  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .sdata        00000004  000113e8  000113e8  000013e8  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .sbss         00000008  000113ec  000113ec  000013ec  2**2
+                  ALLOC
+  3 .bss          00000094  000113f4  000113f4  000013ec  2**2
+                  ALLOC
+  4 .comment      00000018  00000000  00000000  000013ec  2**0
+                  CONTENTS, READONLY
+  5 .riscv.attributes 0000002a  00000000  00000000  00001404  2**0
+                  CONTENTS, READONLY
+  6 .debug_aranges 00000020  00000000  00000000  0000142e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  7 .debug_info   000001ee  00000000  00000000  0000144e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .debug_abbrev 0000013c  00000000  00000000  0000163c  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  9 .debug_line   000002ce  00000000  00000000  00001778  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 10 .debug_frame  0000012c  00000000  00000000  00001a48  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 11 .debug_str    000000ca  00000000  00000000  00001b74  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 12 .debug_line_str 00000065  00000000  00000000  00001c3e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
